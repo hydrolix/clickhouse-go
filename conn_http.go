@@ -215,9 +215,9 @@ func dialHttp(ctx context.Context, addr string, num int, opt *Options) (*httpCon
 		client: &http.Client{
 			Transport: rt,
 		},
-		url:             u,
-		revision:        ClientTCPProtocolVersion, // Preflight uses hardcoded revision, may break older versions.
-		encodeRevision:  0,                        // Encoding data over HTTP must use 0. client_protocol_version does not apply to inserts.
+		url: u,
+		// revision:        ClientTCPProtocolVersion, // Preflight uses hardcoded revision, may break older versions.
+		// encodeRevision:  0,                        // Encoding data over HTTP must use 0. client_protocol_version does not apply to inserts.
 		buffer:          new(chproto.Buffer),
 		compression:     compression.Method,
 		blockCompressor: compress.NewWriter(compress.Level(compression.Level), compress.Method(compression.Method)),
@@ -230,7 +230,7 @@ func dialHttp(ctx context.Context, addr string, num int, opt *Options) (*httpCon
 		return nil, fmt.Errorf("failed to query server hello: %w", err)
 	}
 	conn.handshake = handshake
-	conn.revision = conn.handshake.Revision
+	// conn.revision = conn.handshake.Revision
 
 	return &conn, nil
 }
